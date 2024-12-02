@@ -230,27 +230,18 @@ public class BinarySearchTree<E extends Comparable<E>> {
 	 */
 	//Complete this method.
 	public String inorder() {
-		if (root == null) {
-			return "";
-		}
-
 		StringBuilder inorderTraversal = new StringBuilder();
-		Stack<BSTNode<E>> stack = new Stack<>();
-		BSTNode<E> currentNode = root;
-
-		while (!stack.isEmpty() || currentNode != null) {
-			while (currentNode != null) {
-				stack.push(currentNode);
-				currentNode = currentNode.getLeftChild();
-			}
-			currentNode = stack.pop();
-			inorderTraversal.append(currentNode).append(" ");
-			currentNode = currentNode.getRightChild();
-		}
-
+		inorderSupport(root, inorderTraversal);
 		return inorderTraversal.toString().trim();
-
 	} // end inorder
+
+	private void inorderSupport(BSTNode<E> root, StringBuilder inorder) {
+		if (root != null) {
+			inorderSupport(root.getLeftChild(), inorder);
+			inorder.append(root + " ");
+			inorderSupport(root.getRightChild(), inorder);
+		} // end if
+	} // end inorderSupport
 	
 
 	/**
@@ -260,34 +251,18 @@ public class BinarySearchTree<E extends Comparable<E>> {
 	 */
 	//Complete this method
 	public String postorder() {
-		if (root == null) {
-			return "";
-		}
-
 		StringBuilder postorderTraversal = new StringBuilder();
-		Stack<BSTNode<E>> stack = new Stack<>();
-		Stack<BSTNode<E>> output = new Stack<>();
-		stack.push(root);
-
-		while (!stack.isEmpty()) {
-			BSTNode<E> currentNode = stack.pop();
-			output.push(currentNode);
-
-			if (currentNode.getLeftChild() != null) {
-				stack.push(currentNode.getLeftChild());
-			}
-			if (currentNode.getRightChild() != null) {
-				stack.push(currentNode.getRightChild());
-			}
-		}
-
-		while (!output.isEmpty()) {
-			postorderTraversal.append(output.pop()).append(" ");
-		}
-
+		postorderSupport(root, postorderTraversal);
 		return postorderTraversal.toString().trim();
  	} // end postorder
 
+	private void postorderSupport(BSTNode<E> root, StringBuilder postorder) {
+		if (root != null) {
+			postorderSupport(root.getLeftChild(), postorder);
+			postorderSupport(root.getRightChild(), postorder);
+			postorder.append(root + " ");
+		} // end if
+	} // end postorderSupport
 	
 	/**
 	 * Returns a level order representation of the binary search tree
